@@ -33,6 +33,14 @@ class BasePage():
             except ElementNotInteractableException:
                 return False
             return True
+    
+    def clear(self, i_how: str, i_what: str) -> bool:
+        with allure.step(f'Clear on element with locator: "{i_how} {i_what}"'):
+            try:
+                self._browser.find_element(i_how, i_what).clear()
+            except ElementNotInteractableException:
+                return False
+            return True
 
     def write_field(self, i_how: str, i_what: str, i_keys: str) -> bool:
         with allure.step(f'Write "{i_keys}" in field with locator: "{i_how} {i_what}"'):
@@ -73,3 +81,50 @@ class BasePage():
             return element
         except NoSuchElementException:
             raise AssertionError(f'Element with locator: {i_how} {i_what} is not found!')
+
+     
+    def find_text(self, i_how: str, i_what: str) -> WebElement:
+        try:
+            element = self._browser.find_element(i_how, i_what)
+            return element
+        except NoSuchElementException:
+            raise AssertionError(f'Text with locator: {i_how} {i_what} is not found!')
+
+    
+    def is_text_present(self, i_how: str, i_what: str, i_expected: str) -> WebElement:
+        try:
+            element = self._browser.find_element(i_how, i_what).text
+            assert element == i_expected
+            return element
+        except NoSuchElementException:
+            raise AssertionError(f'Element with locator: {i_how} {i_what} is not found!')
+
+
+    #def isElementNotPresent(self, locator):
+        #return bool(self._browser.find_element_by_xpath(locator))
+
+    
+    def isElementNotPresent(self, locator):
+        try:
+            a = self._browser.find_element_by_xpath(locator)
+            raise AssertionError(f'Element with locator {locator}: is found!')
+        except NoSuchElementException:
+            return True
+
+
+    def isElementPresent(self, locator):
+        try:
+            a = self._browser.find_element_by_css_selector(locator)
+            return True
+        except NoSuchElementException:
+            raise AssertionError(f'Element with locator {locator}: is not found!')
+            return False
+
+
+    def GetValueText(self, locator):
+        try:
+            value_text = self._browser.find_element_by_css_selector(locator).text
+            return value_text
+        except NoSuchElementException:
+            raise AssertionError(f"locator not found")
+            return False
