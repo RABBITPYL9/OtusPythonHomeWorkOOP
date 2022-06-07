@@ -12,4 +12,4 @@ class Figure:
         if isinstance(figure, Figure):
             return self.get_area + figure.get_area
         else:
-            raise ValueError("Ошибка фигуры.")
+            raise ValueError("Ошибка фигуры")
